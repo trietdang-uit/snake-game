@@ -1,22 +1,31 @@
 <!doctype html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Game Rắn</title>
-  </head>
-  <body>
-    <h1>Game Rắn</h1>
-    <div class="hud">
-      <span>Điểm: <strong id="score">0</strong></span>
-      <span id="status"></span>
-    </div>
-    // canvas
-    <p class="help">
-      Phím mũi tên điều hướng · <kbd>Space</kbd> tạm dừng · <kbd>R</kbd> chơi
-      lại khi hết game
-    </p>
-    // dk
-    <script src="game.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Rắn</title>
+</head>
+
+<body>
+  <h1>Game Rắn</h1>
+
+  <!-- HUD -->
+  <div class="hud">
+    <span>Điểm: <strong id="score">0</strong></span>
+    <span id="status"></span>
+  </div>
+
+  <!-- Game canvas -->
+  <canvas id="game" width="400" height="400"></canvas>
+
+  <!-- Hướng dẫn -->
+  <p class="help">
+    Phím mũi tên điều hướng · <kbd>Space</kbd> tạm dừng · <kbd>R</kbd> chơi lại
+  </p>
+
+  <!-- Script -->
+  <script src="game.js"></script>
+</body>
+
 </html>
