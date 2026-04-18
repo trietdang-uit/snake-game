@@ -50,5 +50,52 @@
         requestAnimationFrame(loop);
     }
 
+    (function () {
+        "use strict";
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === " " || e.code === "Space") {
+                e.preventDefault();
+                if (!playing || gameOver) return;
+                paused = !paused;
+                elStatus.textContent = paused ? "Tạm dừng" : "";
+                return;
+            }
+
+            if ((e.key === "r" || e.key === "R") && gameOver) {
+                resetGame();
+                playing = true;
+                return;
+            }
+
+            const keyMap = { ArrowUp: DIR.up, ArrowDown: DIR.down, ArrowLeft: DIR.left, ArrowRight: DIR.right };
+            const d = keyMap[e.key];
+            if (d && playing && !gameOver) {
+                e.preventDefault();
+                enqueueDirection(d.dx, d.dy);
+            }
+        });
+
+        document.querySelectorAll(".dpad button[data-dir]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                if (!playing || gameOver) return;
+                const d = DIR[btn.getAttribute("data-dir")];
+                if (d) enqueueDirection(d.dx, d.dy);
+            });
+        });
+
+        btnStart.addEventListener("click", () => {
+            overlayStart.classList.remove("visible");
+            resetGame();
+            playing = true;
+        });
+
+        btnRestart.addEventListener("click", () => {
+            overlayOver.classList.remove("visible");
+            resetGame();
+            playing = true;
+        });
+    })();
+
     requestAnimationFrame(loop);
 })();
