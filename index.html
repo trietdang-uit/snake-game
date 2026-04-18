@@ -1,31 +1,113 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Game Rắn</title>
+  <title>Snake Game Pro</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #020617;
+      --glass: rgba(255,255,255,0.05);
+      --text: #e2e8f0;
+      --accent: #22c55e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: var(--text);
+    }
+
+    h1 { margin-bottom: 10px; }
+
+    .hud {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .hud strong {
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    .wrap {
+      position: relative;
+      padding: 10px;
+      border-radius: 16px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    canvas {
+      border-radius: 12px;
+      background: #020617;
+      display: block;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 10px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 12px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .overlay.visible {
+      display: flex;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Game Rắn</h1>
 
-  <!-- HUD -->
-  <div class="hud">
-    <span>Điểm: <strong id="score">0</strong></span>
-    <span id="status"></span>
+<h1>🐍 Snake Game</h1>
+
+<div class="hud">
+  Điểm: <strong id="score">0</strong>
+  <span id="status"></span>
+</div>
+
+<div class="wrap">
+  <canvas id="game" width="600" height="600"></canvas>
+
+  <div id="overlay-start" class="overlay visible">
+    <h2>Chơi</h2>
+    <button id="btn-start">Bắt đầu</button>
   </div>
 
-  <!-- Game canvas -->
-  <canvas id="game" width="400" height="400"></canvas>
+  <div id="overlay-over" class="overlay">
+    <h2>Game Over</h2>
+    <p>Điểm: <strong id="final-score">0</strong></p>
+    <button id="btn-restart">Chơi lại</button>
+  </div>
+</div>
 
-  <!-- Hướng dẫn -->
-  <p class="help">
-    Phím mũi tên điều hướng · <kbd>Space</kbd> tạm dừng · <kbd>R</kbd> chơi lại
-  </p>
-
-  <!-- Script -->
-  <script src="game.js"></script>
+<script src="game.js"></script>
 </body>
-
 </html>
