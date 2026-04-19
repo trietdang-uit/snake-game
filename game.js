@@ -6,6 +6,20 @@
   const CELL = 20;
   const TICK_MS = 110;
 
+  const DIR = Object.freeze({
+    up: { dx: 0, dy: -1 },
+    down: { dx: 0, dy: 1 },
+    left: { dx: -1, dy: 0 },
+    right: { dx: 1, dy: 0 },
+  });
+
+  const KEY_TO_DIR = {
+    ArrowUp: DIR.up,
+    ArrowDown: DIR.down,
+    ArrowLeft: DIR.left,
+    ArrowRight: DIR.right,
+  };
+
   const canvas = document.getElementById("game");
   const ctx = canvas.getContext("2d");
   const elScore = document.getElementById("score");
@@ -15,13 +29,6 @@
   const overlayOver = document.getElementById("overlay-over");
   const btnStart = document.getElementById("btn-start");
   const btnRestart = document.getElementById("btn-restart");
-
-  const DIR = {
-    up: { dx: 0, dy: -1 },
-    down: { dx: 0, dy: 1 },
-    left: { dx: -1, dy: 0 },
-    right: { dx: 1, dy: 0 },
-  };
 
   let snake;
   let direction;
@@ -33,6 +40,10 @@
   let playing;
   let lastTick;
   let acc;
+
+  function cellKey(x, y) {
+    return x + "," + y;
+  }
 
   function resetGame() {
     const midX = Math.floor(COLS / 2);
@@ -56,13 +67,13 @@
   }
 
   function spawnFood() {
-    const taken = new Set(snake.map((s) => s.x + "," + s.y));
+    const taken = new Set(snake.map((s) => cellKey(s.x, s.y)));
     let x;
     let y;
     do {
       x = Math.floor(Math.random() * COLS);
       y = Math.floor(Math.random() * ROWS);
-    } while (taken.has(x + "," + y));
+    } while (taken.has(cellKey(x, y)));
     food = { x, y };
   }
 
@@ -75,6 +86,18 @@
     if (dx === -ref.dx && dy === -ref.dy) return;
     if (inputQueue.length >= 2) return;
     inputQueue.push({ dx, dy });
+  }
+
+  function tryTurn(d) {
+    if (!playing || gameOver) return;
+    enqueueDirection(d.dx, d.dy);
+  }
+
+  function startNewGame(fromStartMenu) {
+    if (fromStartMenu) overlayStart.classList.remove("visible");
+    overlayOver.classList.remove("visible");
+    resetGame();
+    playing = true;
   }
 
   function step() {
@@ -191,12 +214,6 @@
     requestAnimationFrame(loop);
   }
 
-  function startFromMenu() {
-    overlayStart.classList.remove("visible");
-    resetGame();
-    playing = true;
-  }
-
   document.addEventListener("keydown", (e) => {
     if (e.key === " " || e.code === "Space") {
       e.preventDefault();
@@ -207,39 +224,19 @@
     }
 
     if ((e.key === "r" || e.key === "R") && gameOver) {
-      overlayOver.classList.remove("visible");
-      resetGame();
-      playing = true;
+      e.preventDefault();
+      startNewGame(false);
       return;
     }
 
-    const keyMap = {
-      ArrowUp: DIR.up,
-      ArrowDown: DIR.down,
-      ArrowLeft: DIR.left,
-      ArrowRight: DIR.right,
-    };
-    const d = keyMap[e.key];
+    const d = KEY_TO_DIR[e.key];
     if (!d) return;
     e.preventDefault();
-    if (!playing || gameOver) return;
-    enqueueDirection(d.dx, d.dy);
+    tryTurn(d);
   });
 
-  document.querySelectorAll(".dpad button[data-dir]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      if (!playing || gameOver) return;
-      const d = DIR[btn.getAttribute("data-dir")];
-      if (d) enqueueDirection(d.dx, d.dy);
-    });
-  });
-
-  btnStart.addEventListener("click", startFromMenu);
-  btnRestart.addEventListener("click", () => {
-    overlayOver.classList.remove("visible");
-    resetGame();
-    playing = true;
-  });
+  btnStart.addEventListener("click", () => startNewGame(true));
+  btnRestart.addEventListener("click", () => startNewGame(false));
 
   resetGame();
   playing = false;

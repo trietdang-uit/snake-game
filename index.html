@@ -43,6 +43,9 @@
 
     .wrap {
       position: relative;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
       padding: 10px;
       border-radius: 16px;
       background: var(--glass);
@@ -81,6 +84,75 @@
       background: linear-gradient(135deg, #22c55e, #4ade80);
       color: #022c22;
     }
+
+    .game-layout {
+      position: relative;
+      align-self: stretch;
+      width: 100%;
+      max-width: 100%;
+      --canvas-w: 600px;
+      --wrap-pad-x: 20px;
+      --game-hint-gap: 28px;
+      --half-wrap: calc((var(--canvas-w) + var(--wrap-pad-x)) / 2);
+    }
+
+    .hints {
+      position: absolute;
+      left: calc(50% + var(--half-wrap) + var(--game-hint-gap));
+      top: 14px;
+      margin: 0;
+      width: min(240px, calc(50vw - var(--half-wrap) - var(--game-hint-gap) - 16px));
+      max-width: 240px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(226, 232, 240, 0.72);
+    }
+
+    .hints-title {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(226, 232, 240, 0.55);
+    }
+
+    .hints ul {
+      margin: 0;
+      padding-left: 1.1em;
+    }
+
+    .hints li {
+      margin-bottom: 8px;
+    }
+
+    .hints li:last-child {
+      margin-bottom: 0;
+    }
+
+    .hints strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 920px) {
+      .hints {
+        position: static;
+        left: auto;
+        top: auto;
+        width: 100%;
+        max-width: 620px;
+        margin: 16px auto 0;
+        padding: 0 16px 8px;
+        text-align: center;
+      }
+
+      .hints ul {
+        display: inline-block;
+        text-align: left;
+      }
+    }
   </style>
 </head>
 
@@ -93,19 +165,30 @@
   <span id="status"></span>
 </div>
 
-<div class="wrap">
-  <canvas id="game" width="600" height="600"></canvas>
+<div class="game-layout">
+  <div class="wrap">
+    <canvas id="game" width="600" height="600"></canvas>
 
-  <div id="overlay-start" class="overlay visible">
-    <h2>Chơi</h2>
-    <button id="btn-start">Bắt đầu</button>
+    <div id="overlay-start" class="overlay visible">
+      <h2>Chơi</h2>
+      <button id="btn-start">Bắt đầu</button>
+    </div>
+
+    <div id="overlay-over" class="overlay">
+      <h2>Game Over</h2>
+      <p>Điểm: <strong id="final-score">0</strong></p>
+      <button id="btn-restart">Chơi lại</button>
+    </div>
   </div>
 
-  <div id="overlay-over" class="overlay">
-    <h2>Game Over</h2>
-    <p>Điểm: <strong id="final-score">0</strong></p>
-    <button id="btn-restart">Chơi lại</button>
-  </div>
+  <aside class="hints" role="note">
+    <p class="hints-title">Cách chơi</p>
+    <ul>
+      <li><strong>Mũi tên</strong> — di chuyển</li>
+      <li><strong>Space</strong> — tạm dừng / tiếp tục</li>
+      <li><strong>R</strong> — chơi lại khi thua (hoặc nút <strong>Chơi lại</strong>)</li>
+    </ul>
+  </aside>
 </div>
 
 <script src="game.js"></script>
