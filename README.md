@@ -1,7 +1,10 @@
 Thông tin Sinh Viên:
 Đặng Minh Triết - 25730155
+
 Phạm Trần Đức Trọng - 25730156
+
 Hoàng Chí Công - 25730101 
+
 # Snake Game
 
 Game rắn săn mồi chạy trên trình duyệt (HTML5 Canvas). Điều khiển con rắn ăn thức ăn để dài ra và tăng điểm; tránh đâm tường và cắn vào thân mình.
